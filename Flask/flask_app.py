@@ -27,7 +27,7 @@ def index():
 @app.route("/popquery")
 def query():
     state = request.args.get('state')
-    state = getFIPSCode(state)
+    state = getFIPSCodeState(state)
     if not state:
         return render_template('error.html')
     request_url = "http://api.census.gov/data/2010/sf1?key="+censusKey+"&get=P0010001&for=state:"+state

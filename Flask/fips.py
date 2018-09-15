@@ -1,62 +1,42 @@
-state_codes = {
-    "Alabama": "01",
-    "Alaska": "02",
-    "Arizona": "04",
-    "Arkansas": "05",
-    "California": "06",
-    "Colorado": "08",
-    "Connecticut": "09",
-    "Delaware": "10",
-    "District of Columbia": "11",
-    "Florida": "12",
-    "Georgia": "13",
-    "Hawaii": "15",
-    "Idaho": "16",
-    "Illinois": "17",
-    "Indiana": "18",
-    "Iowa": "19",
-    "Kansas": "20",
-    "Kentucky": "21",
-    "Louisiana": "22",
-    "Maine": "23",
-    "Maryland": "24",
-    "Massachusetts": "25",
-    "Michigan": "26",
-    "Minnesota": "27",
-    "Mississippi": "28",
-    "Missouri": "29",
-    "Montana": "30",
-    "Nebraska": "31",
-    "Nevada": "32",
-    "New Hampshire": "33",
-    "New Jersey": "34",
-    "New Mexico": "35",
-    "New York": "36",
-    "North Carolina": "37",
-    "North Dakota": "38",
-    "Ohio": "39",
-    "Oklahoma": "40",
-    "Oregon": "41",
-    "Pennsylvania": "42",
-    "Rhode Island": "44",
-    "South Carolina": "45",
-    "South Dakota": "46",
-    "Tennessee": "47",
-    "Texas": "48",
-    "Utah": "49",
-    "Vermont": "50",
-    "Virginia": "51",
-    "Washington": "53",
-    "West Virginia": "54",
-    "Wisconsin": "55",
-    "Wyoming": "56"
-}
+import os
+
+cur_path = os.path.dirname(__file__)
+
+new_path = os.path.relpath('..\\fipsResources\\state_to_code.txt', cur_path)
+
+state_codes = {}
+with open(new_path, 'r') as f:
+    for x in f:
+        line = x.split(':')
+        state_codes[line[0].strip()] = line[1].strip()[1:3]
+
+new_path = os.path.relpath('..\\fipsResources\\national_county.txt', cur_path)
+
+county_codes = {}
+with open(new_path, 'r') as f:
+    cur_State = "AL"
+    temp_Dict = {}
+    for x in f:
+        line = x.split(',')
+        if line[0] == cur_State:
+            temp_Dict[line[3]] = line[2]
+        else:
+            county_codes[cur_State]=temp_Dict
+            cur_State = line[0]
+            temp_Dict = {}
+            temp_Dict[line[3]] = line[2]
 
 
-def getFIPSCode(state):
+def getFIPSCodeState(state):
     try:
         code = state_codes[state]
         return code
     except KeyError:
         return False
 
+def getFIPSCodeCounty(state, county):
+    try:
+        code = county_codes[state][county]
+        return code
+    except KeyError:
+        return False
