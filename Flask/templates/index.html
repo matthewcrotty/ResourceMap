@@ -3,79 +3,52 @@
 <head>
   <meta charset="UTF-8">
     <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <style>
-       /* Set the size of the div element that contains the map */
-      #map {
-        height: 400px;  /* The height is 400 pixels */
-        width: 100%;  /* The width is the width of the web page */
-        border: 10px solid black;
-        padding: 20px;
-        margin: 20px;
-       }
-       /* Changes background image to fruit*/
-
-       div.col-md-6{
-        font-family: "Courier New", Courier, monospace; 
-        line-height: 2.0;
-        font-weight: bold;
-       }
-       h3{
-        font-style: italic;
-        font-size: 40px;
-        font-weight: bold;
-        margin: 20px;
-
-       }
-       body {
-          background-image: url("../static/img/fruit.png");
-       }
-
-       ul li{
-        font-size: 40px;
-       }
-  </style>
-<!--   <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
- -->
-  <title>Food Map</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!--Custom CSS-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <title>Resource Allocation Portal</title>
 </head>
 <body>
   <div clas="container">
     <div class="row">
         <div class="col-md-6">
-          <h3>My Google Maps Demo</h3>
+          <p>Adjust the map to view supplies information</p>
           <div id="map"></div>
           <script>
             // Initialize and add the map
             function initMap() {
               // The location of Uluru
-              var uluru = {lat: -25.344, lng: 131.036};
+              var latlong = {lat: 42.6526, lng: -73.7562};
               // The map, centered at Uluru
               var map = new google.maps.Map(
-                  document.getElementById('map'), {zoom: 4, center: uluru});
-              // The marker, positioned at Uluru
-              var marker = new google.maps.Marker({position: uluru, map: map});
+                  document.getElementById('map'), {zoom: 4, center: latlong});
 
               google.maps.event.addListener(map, 'dragend', function() {
                 //Post coordinates to flask server
                 console.log(map.getCenter().lat(),map.getCenter().lng());
-                $.post("http://localhost:5000/geoquery", {lat: map.getCenter().lat(), lng: map.getCenter().lng()})
-                 .done(function(data, status){
-                    alert("Data: " + data + "\nStatus: " + status);
-                });
+                $.post("http://localhost:5000/geoquery", {lat: map.getCenter().lat(), lng: map.getCenter().lng()}).done(function(data, status){
+                  console.log(data, status);
+                  var str = '';
+                  for(i=0; i<data.length; i++){
+                    if(data[i].length != 1){
+                      str += '<ul>';
+                      str += '<li>State Code: '+ data[i][0] +'</li>';
+                      str += '<li>County Code: '+ data[i][1] +'</li>';
+                      str += '<li>Resource Type: '+ data[i][2] +'</li>';
+                      str += '<li>Resource Name: '+ data[i][3] +'</li>';
+                      str += '<li>Quantity Available: '+ data[i][4] +'</li>';
+                      str += '<li>Location: '+ data[i][5] +'</li>';
+                      str += '</ul>';
+                  }
+                  $('#resource_list').html(str);
+                };
               });
-            }
+            });
+          }
           </script>
           <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBbbvgJb9Yc-qHEZYmcot9C3ZdTaWWsLjc&callback=initMap"></script>
         </div>
-        <div class="col-md-6">
-          <ul>
-            <li>State Code: {{resources["State_Code"]}}</li>
-            <li>County Code: {{resources["County_Code"]}}</li>
-            <li>Resource Code: {{resources["Resource_Type"]}}</li>
-            <li>Quantity Available: {{resources["Quantity"]}}</li>
-            <li>Quantity Available: {{resources["Location"]}}</li>
-          </ul>
+        <div id="resource_list" class="col-md-6">
         </div>
     </div>
   </div>

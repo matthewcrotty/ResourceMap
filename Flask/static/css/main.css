@@ -1,3 +1,29 @@
-ul{
-	font-size: 40;
+/* Set the size of the div element that contains the map */
+#map {
+	height: 400px;  /* The height is 400 pixels */
+	width: 100%;  /* The width is the width of the web page */
+	border: 10px solid black;
+	padding: 20px;
+	margin: 20px;
+}
+/* Changes background image to fruit*/
+div.col-md-6{
+	font-family: "Courier New", Courier, monospace; 
+	line-height: 2.0;
+	font-weight: bold;
+}
+
+h3{
+	font-style: italic;
+	font-size: 40px;
+	font-weight: bold;
+	margin: 20px;
+}
+
+body {
+  background-image: url("../img/fruit.png");
+}
+
+ul li{
+	font-size: 40px;
 }

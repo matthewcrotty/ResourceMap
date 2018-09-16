@@ -2,15 +2,22 @@ from flask import *
 import urllib.request
 import json
 from fips import *
+from flaskext.mysql import MySQL
+from flask import jsonify
 
 app = Flask(__name__, template_folder='templates')
+mysql = MySQL()
+app.config['MYSQL_DATABASE_USER'] = 'root'
+app.config['MYSQL_DATABASE_PASSWORD'] = ''
+app.config['MYSQL_DATABASE_DB'] = 'Resources'
+app.config['MYSQL_DATABASE_HOST'] = 'localhost'
+mysql.init_app(app)
 
 censusKey = "1dc5156c4a13a23278eb8105175e8d9725fb69f0"
 
 @app.route("/")
 def index():
-    resources = {"State_Code":"00","County_Code":"001","Resource_Type":"Salt","Quantity":"100 lb.","Location":"Troy Warehouse"}
-    return render_template('index.html', resources=resources)
+    return render_template('index.html')
 
 
 @app.route("/popquery")
@@ -19,13 +26,22 @@ def query():
     county = request.args.get('county')
     county = getFIPSCodeCounty(state, county)
     state = getFIPSCodeState('\"'+state+'\"')
-    print(state, county)
+    print("State",state,"County",county)
     if not state:
         return "error"
     request_url = "http://api.census.gov/data/2010/sf1?key="+censusKey+"&get=P0010001,NAME&for=county:"+county+"&in=state:"+state
     with urllib.request.urlopen(request_url) as response:
         text = response.read()
-    return text
+    ## Query MySQL Database for all resources at location represented by 
+    ## state and country code
+    cursor = mysql.connect().cursor()
+    cursor.execute("SELECT * from resources where state_code='" + "36" + "' and county_code='" + "001" + "'")
+    data = cursor.fetchall()
+    print(type(data))
+    if data is None:
+        return ["Sorry. Cannot find any resources available here!"]
+    else:
+        return jsonify(data)
 
 
 @app.route("/geoquery", methods=('GET', 'POST'))
