@@ -34,6 +34,7 @@ def getFIPSCodeState(state):
     except KeyError:
         return False
 
+
 def getFIPSCodeCounty(state, county):
     try:
         code = county_codes[state][county]
