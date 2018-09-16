@@ -2,7 +2,7 @@ import os
 
 cur_path = os.path.dirname(__file__)
 
-new_path = os.path.relpath('..\\fipsResources\\state_to_code.txt', cur_path)
+new_path = os.path.relpath('../fipsResources/state_to_code.txt', cur_path)
 
 state_codes = {}
 with open(new_path, 'r') as f:
@@ -10,7 +10,7 @@ with open(new_path, 'r') as f:
         line = x.split(':')
         state_codes[line[0].strip()] = line[1].strip()[1:3]
 
-new_path = os.path.relpath('..\\fipsResources\\national_county.txt', cur_path)
+new_path = os.path.relpath('../fipsResources/national_county.txt', cur_path)
 
 county_codes = {}
 with open(new_path, 'r') as f:
@@ -27,7 +27,7 @@ with open(new_path, 'r') as f:
             temp_Dict[line[3]] = line[2]
 
 
-new_path = os.path.relpath('..\\fipsResources\\state_to_abr.txt', cur_path)
+new_path = os.path.relpath('../fipsResources/state_to_abr.txt', cur_path)
 
 abbreviations = {}
 with open(new_path, 'r') as f:
