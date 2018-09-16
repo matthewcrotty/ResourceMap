@@ -21,7 +21,7 @@
               var latlong = {lat: 42.6526, lng: -73.7562};
               // The map, centered at Uluru
               var map = new google.maps.Map(
-                  document.getElementById('map'), {zoom: 4, center: latlong});
+                  document.getElementById('map'), {zoom: 8, center: latlong});
 
               google.maps.event.addListener(map, 'dragend', function() {
                 //Post coordinates to flask server
