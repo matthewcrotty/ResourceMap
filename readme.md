@@ -1,3 +1,7 @@
+# Description
+
+Natural disaster resource allocation utility filtered by geographic area.
+
 # Installation
 
 ## Server
