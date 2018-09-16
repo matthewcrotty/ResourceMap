@@ -1,5 +1,4 @@
 from flask import *
-from flask_googlemaps import Map
 import urllib.request
 import json
 from fips import *
@@ -10,14 +9,8 @@ censusKey = "1dc5156c4a13a23278eb8105175e8d9725fb69f0"
 
 @app.route("/")
 def index():
-    my_map = Map(
-        identifier="view-side",
-        lat=37.4419,
-        lng=-122.1419,
-        markers=[(37.4419, -122.1419)]
-    )
     resources = {"State_Code":"00","County_Code":"001","Resource_Type":"Salt","Quantity":"100 lb.","Location":"Troy Warehouse"}
-    return render_template('index.html', mymap=my_map, resources=resources)
+    return render_template('index.html', resources=resources)
 
 
 @app.route("/popquery")
