@@ -28,7 +28,7 @@ def query():
     state = getFIPSCodeState('\"'+state+'\"')
     print("State",state,"County",county)
     if not state:
-        return "error"
+        return ["Sorry Cannot find any resources available here!"]
     request_url = "http://api.census.gov/data/2010/sf1?key="+censusKey+"&get=P0010001,NAME&for=county:"+county+"&in=state:"+state
     with urllib.request.urlopen(request_url) as response:
         text = response.read()

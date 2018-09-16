@@ -4,6 +4,16 @@ On mac, install homebrew
 Follow instructions on https://tecadmin.net/install-mysql-macos/
 In terminal run "pip install -r requirements.txt" 
 
+## Server
+
+To run the Flask server, navigate to the Flask directory inside the project repo in a terminal. Enter the following command:
+
+export FLASK_APP=flask_app.py
+export FLASK_DEBUG=1
+python -m flask run
+
+Open a browser and enter http://localhost:5000 in the url bar.
+
 ## Database
 
 ### Export 

@@ -16,21 +16,13 @@
           <div id="map"></div>
           <script>
             // Initialize and add the map
-            function initMap() {
-              // The location of Uluru
-              var latlong = {lat: 42.6526, lng: -73.7562};
-              // The map, centered at Uluru
-              var map = new google.maps.Map(
-                  document.getElementById('map'), {zoom: 8, center: latlong});
-
-              google.maps.event.addListener(map, 'dragend', function() {
-                //Post coordinates to flask server
+            function handler(map) {
                 console.log(map.getCenter().lat(),map.getCenter().lng());
-                $.post("http://localhost:5000/geoquery", {lat: map.getCenter().lat(), lng: map.getCenter().lng()}).done(function(data, status){
+                $.post("./geoquery", {lat: map.getCenter().lat(), lng: map.getCenter().lng()}).done(function(data, status){
                   console.log(data, status);
                   var str = '';
                   for(i=0; i<data.length; i++){
-                    if(data[i].length != 1){
+                    if(data[i].length == 6){
                       str += '<ul>';
                       str += '<li>State Code: '+ data[i][0] +'</li>';
                       str += '<li>County Code: '+ data[i][1] +'</li>';
@@ -39,16 +31,30 @@
                       str += '<li>Quantity Available: '+ data[i][4] +'</li>';
                       str += '<li>Location: '+ data[i][5] +'</li>';
                       str += '</ul>';
-                  }
-                  $('#resource_list').html(str);
-                };
+                    }
+                    else{
+                      str += '<ul><li>No available resources found!</li></ul>';
+                    }
+                    $('#resource_list').html(str);
+                  };
               });
-            });
-          }
+            }
+            function initMap() {
+              // The location of Uluru
+              var latlong = {lat: 42.6526, lng: -73.7562};
+              // The map, centered at Uluru
+              var map = new google.maps.Map(
+                  document.getElementById('map'), {zoom: 8, center: latlong});
+              //For first time
+              handler(map)
+              //Any time user interacts with map
+              google.maps.event.addListener(map, 'dragend', function() {handler(map)});
+              google.maps.event.addListener(map, 'zoom_changed', function() {handler(map)});
+            }
           </script>
           <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBbbvgJb9Yc-qHEZYmcot9C3ZdTaWWsLjc&callback=initMap"></script>
         </div>
-        <div id="resource_list" class="col-md-6">
+        <div id="resource_list" class="col-md-6 container">
         </div>
     </div>
   </div>

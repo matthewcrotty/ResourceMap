@@ -25,5 +25,19 @@ body {
 }
 
 ul li{
-	font-size: 40px;
+	font-size: 20px;
+}
+
+ul {
+	background: #33D7FF;
+	border-radius: 5px;
+	color: black;
+	padding: 6px;
+	list-style: none;
+}
+
+#resource_list.container{
+  margin-top: 50px;
+  height:400px;
+  overflow-y:scroll;
 }
