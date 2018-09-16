@@ -16,7 +16,7 @@ Open a browser and enter http://localhost:5000 in the url bar.
 
 ## Database
 
-In order to run this application, please install mysql on your machine if you have not already done
+In order to run this application, please [install mysql on your machine](https://dev.mysql.com/doc/refman/8.0/en/installing.html) if you have not already done so.
 
 ### Export 
 
