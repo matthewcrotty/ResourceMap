@@ -45,11 +45,8 @@ def getFIPSCodeState(state):
 
 def getFIPSCodeCounty(statea, county):
     try:
-        print(statea, county)
-        state = abbreviations[statea]
-        print(state)
-        print(county_codes[state])
-        code = county_codes[state][county]
+        state = abbreviations[statea.strip()]
+        code = county_codes[state.strip()][county]
         return code
     except KeyError:
         return False
