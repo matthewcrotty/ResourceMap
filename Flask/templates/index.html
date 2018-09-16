@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<<<<<<< HEAD
   <meta charset="UTF-8">
     <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -13,7 +12,7 @@
        }
   </style>
 <!--   <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
- -->    
+ -->
   <title>Title</title>
 </head>
 <body>
@@ -32,11 +31,12 @@
                   document.getElementById('map'), {zoom: 4, center: uluru});
               // The marker, positioned at Uluru
               var marker = new google.maps.Marker({position: uluru, map: map});
-              
-              google.maps.event.addListener(map, 'dragend', function() { 
+
+              google.maps.event.addListener(map, 'dragend', function() {
                 //Post coordinates to flask server
                 console.log(map.getCenter().lat(),map.getCenter().lng());
-                $.get("http://localhost:5000/", function(data, status){
+                $.post("http://localhost:5000/geoquery", {lat: map.getCenter().lat(), lng: map.getCenter().lng()})
+                 .done(function(data, status){
                     alert("Data: " + data + "\nStatus: " + status);
                 });
               });
