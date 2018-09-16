@@ -6,11 +6,6 @@ from fips import *
 
 app = Flask(__name__, template_folder='templates')
 
-app.config['GOOGLEMAPS_KEY'] = "AIzaSyBbbvgJb9Yc-qHEZYmcot9C3ZdTaWWsLjc"
-GoogleMaps(app)
-
-censusKey = "1dc5156c4a13a23278eb8105175e8d9725fb69f0"
-
 
 @app.route("/")
 def index():
@@ -20,8 +15,8 @@ def index():
         lng=-122.1419,
         markers=[(37.4419, -122.1419)]
     )
-
-    return render_template('index.html', mymap=my_map)
+    resources = {"State_Code":"00","County_Code":"001","Resource_Type":"Salt","Quantity":"100 lb.","Location":"Troy Warehouse"}
+    return render_template('index.html', mymap=my_map, resources=resources)
 
 
 @app.route("/popquery")
