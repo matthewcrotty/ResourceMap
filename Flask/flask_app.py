@@ -1,6 +1,4 @@
 from flask import *
-from flask import jsonify
-from flask_googlemaps import GoogleMaps
 from flask_googlemaps import Map
 import urllib.request
 import json
@@ -52,6 +50,6 @@ def geoquery():
                 elif y['types'][0] == 'administrative_area_level_1':
                     state = y['long_name']
         print(county + ", " + state)
-    return redirect('/popquery?state='+state)
+    return county+" "+state#redirect('/popquery?state='+state)
 
 
