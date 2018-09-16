@@ -27,6 +27,14 @@ with open(new_path, 'r') as f:
             temp_Dict[line[3]] = line[2]
 
 
+new_path = os.path.relpath('..\\fipsResources\\state_to_abr.txt', cur_path)
+
+abbreviations = {}
+with open(new_path, 'r') as f:
+    for x in f:
+        line = x.replace('\"', "").split(',')
+        abbreviations[line[0]] = line[1]
+
 def getFIPSCodeState(state):
     try:
         code = state_codes[state]
@@ -35,8 +43,12 @@ def getFIPSCodeState(state):
         return False
 
 
-def getFIPSCodeCounty(state, county):
+def getFIPSCodeCounty(statea, county):
     try:
+        print(statea, county)
+        state = abbreviations[statea]
+        print(state)
+        print(county_codes[state])
         code = county_codes[state][county]
         return code
     except KeyError:
